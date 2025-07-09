@@ -1,0 +1,117 @@
+/* General body styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f8;
+  background-image: -webkit-linear-gradient(65deg, #A683E3 50%, #E4E9FD 50%);
+  margin: 0;
+  padding: 40px 0;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Common box styling */
+.box {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px 0;
+  padding: 25px 20px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 15px -5px rgba(0, 0, 0, 0.3);
+}
+
+/* Heading-specific overrides */
+#heading {
+  background-color: #A683E3;
+  text-align: center;
+}
+
+#heading h1 {
+  color: white;
+  margin: 0;
+  padding: 10px 0;
+}
+
+/* Each task item */
+.item {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #F1F1F1;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item input[type="checkbox"] {
+  margin: 20px;
+}
+
+input:checked + p {
+  text-decoration: line-through;
+  text-decoration-color: #A683E3;
+}
+
+p {
+  margin: 0;
+  padding: 20px;
+  font-weight: 200;
+  font-size: 20px;
+  color: #00204a;
+}
+
+/* Form styling */
+form {
+  text-align: center;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  flex-grow: 1;
+  height: 60px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  box-shadow: inset 0 -3px 0 0 #A683E3;
+}
+
+::placeholder {
+  color: grey;
+  opacity: 1;
+}
+
+/* Add button */
+button {
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  background-color: #A683E3;
+  color: white;
+  font-size: 30px;
+  padding-bottom: 6px;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+/* Footer if needed */
+footer {
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
