@@ -12,45 +12,64 @@
   </header>
 
   <main class="box">
-    <!-- Filter -->
+
+    <!-- Alert Message -->
+    <% if (alert) { %>
+      <div class="alert <%= alert %>">
+        <%= alert === "added" ? "Task added successfully." : 
+            alert === "updated" ? "Task updated." :
+            alert === "deleted" ? "Task deleted." :
+            alert === "empty" ? "Task cannot be empty." : "" %>
+        <button onclick="this.parentElement.style.display='none'">X</button>
+      </div>
+    <% } %>
+
+    <!-- Filter Dropdown -->
     <form method="GET" action="/" class="filter-form">
       <select name="priority" onchange="this.form.submit()">
         <option value="">All Priorities</option>
-        <option value="High">High</option>
-        <option value="Medium">Medium</option>
-        <option value="Low">Low</option>
+        <% ["Urgent", "High", "Low"].forEach(p => { %>
+          <option value="<%= p %>" <%= priority === p ? "selected" : "" %>><%= p %></option>
+        <% }) %>
       </select>
     </form>
 
-    <!-- Add Form -->
+    <!-- Add Task Form -->
     <form action="/add" method="POST" class="task-form">
       <input type="text" name="task" placeholder="Enter a task..." required />
       <select name="priority" required>
-        <option value="">Priority</option>
-        <option>High</option>
-        <option>Medium</option>
-        <option>Low</option>
+        <option disabled selected value="">Select Priority</option>
+        <% ["Urgent", "High", "Low"].forEach(p => { %>
+          <option value="<%= p %>"><%= p %></option>
+        <% }) %>
       </select>
-      <button type="submit">+</button>
+      <button type="submit" title="Add Task">+</button>
     </form>
 
     <!-- Task List -->
-    <%  todos.forEach(todo => { %>
-      <div class="item">
-        <form action="/delete" method="POST">
-          <input type="hidden" name="id" value="<%= todo.id %>">
-          <button type="submit" class="delete-btn">X</button>
-        </form>
+    <% if (todos.length === 0) { %>
+      <p class="no-tasks">No tasks found for selected priority.</p>
+    <% } else { %>
+      <% todos.forEach(todo => { %>
+        <div class="item">
+          <!-- Delete Form -->
+          <form action="/delete" method="POST">
+            <input type="hidden" name="id" value="<%= todo.id %>">
+            <button type="submit" class="delete-btn" title="Delete Task">X</button>
+          </form>
 
-        <form action="/edit" method="POST" class="edit-form">
-          <input type="hidden" name="id" value="<%= todo.id %>">
-          <input type="text" name="newTask" value="<%= todo.task %>" />
-          <button type="submit">O</button>
-        </form>
+          <!-- Edit Form -->
+          <form action="/edit" method="POST" class="edit-form">
+            <input type="hidden" name="id" value="<%= todo.id %>">
+            <input type="text" name="newTask" value="<%= todo.task %>" />
+            <button type="submit" title="Update Task">O</button>
+          </form>
 
-        <span class="priority <%= todo.priority.toLowerCase() %>"><%= todo.priority %></span>
-      </div>
-    <% }) %>
+          <!-- Priority Label -->
+          <span class="priority <%= todo.priority.toLowerCase() %>"><%= todo.priority %></span>
+        </div>
+      <% }) %>
+    <% } %>
   </main>
 
   <footer>
