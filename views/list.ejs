@@ -2,78 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ToDo List</title>
-  <link rel="stylesheet" href="/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToDoList</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header>
-    <h1>ToDo List</h1>
-  </header>
-
-  <main class="box">
-
-    <!-- Alert Message -->
-    <% if (alert) { %>
-      <div class="alert <%= alert %>">
-        <%= alert === "added" ? "Task added successfully." : 
-            alert === "updated" ? "Task updated." :
-            alert === "deleted" ? "Task deleted." :
-            alert === "empty" ? "Task cannot be empty." : "" %>
-        <button onclick="this.parentElement.style.display='none'">X</button>
+  <div id="heading" class="box">
+    <h1>ToDoList</h1>
+  </div>
+  <div class="box">
+    <% for (var i = 0; i < ejes.length; i++) { %>
+      <div class="item">
+        <input type="checkbox" />
+        <p><%= ejes[i] %></p>
       </div>
     <% } %>
-
-    <!-- Filter Dropdown -->
-    <form method="GET" action="/" class="filter-form">
-      <select name="priority" onchange="this.form.submit()">
-        <option value="">All Priorities</option>
-        <% ["Urgent", "High", "Low"].forEach(p => { %>
-          <option value="<%= p %>" <%= priority === p ? "selected" : "" %>><%= p %></option>
-        <% }) %>
-      </select>
+    <form action="/" method="POST">
+      <input type="text" name="ele1" placeholder="Enter the task" required />
+      <button type="submit">+</button>
     </form>
-
-    <!-- Add Task Form -->
-    <form action="/add" method="POST" class="task-form">
-      <input type="text" name="task" placeholder="Enter a task..." required />
-      <select name="priority" required>
-        <option disabled selected value="">Select Priority</option>
-        <% ["Urgent", "High", "Low"].forEach(p => { %>
-          <option value="<%= p %>"><%= p %></option>
-        <% }) %>
-      </select>
-      <button type="submit" title="Add Task">+</button>
-    </form>
-
-    <!-- Task List -->
-    <% if (todos.length === 0) { %>
-      <p class="no-tasks">No tasks found for selected priority.</p>
-    <% } else { %>
-      <% todos.forEach(todo => { %>
-        <div class="item">
-          <!-- Delete Form -->
-          <form action="/delete" method="POST">
-            <input type="hidden" name="id" value="<%= todo.id %>">
-            <button type="submit" class="delete-btn" title="Delete Task">X</button>
-          </form>
-
-          <!-- Edit Form -->
-          <form action="/edit" method="POST" class="edit-form">
-            <input type="hidden" name="id" value="<%= todo.id %>">
-            <input type="text" name="newTask" value="<%= todo.task %>" />
-            <button type="submit" title="Update Task">O</button>
-          </form>
-
-          <!-- Priority Label -->
-          <span class="priority <%= todo.priority.toLowerCase() %>"><%= todo.priority %></span>
-        </div>
-      <% }) %>
-    <% } %>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 ToDo List App</p>
-  </footer>
+  </div>
 </body>
 </html>
