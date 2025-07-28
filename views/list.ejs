@@ -13,8 +13,9 @@
   <div class="box">
     <% for (var i = 0; i < ejes.length; i++) { %>
       <div class="item">
-        <input type="checkbox" />
+        <input type="checkbox" onclick="deleteTask('<%= ejes[i] %>')" />
         <p><%= ejes[i] %></p>
+        <button type="submit" onclick="editTask('<%= ejes[i] %>')">O</button>
       </div>
     <% } %>
     <form action="/" method="POST">
@@ -22,5 +23,42 @@
       <button type="submit">+</button>
     </form>
   </div>
+
+ <script>
+    function deleteTask(task) {
+      fetch("/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ task: task })
+      }).then(res => {
+        if (res.ok) {
+          location.reload();
+        } else {
+          alert("Failed to delete task");
+        }
+      });
+    }
+  function editTask(oldTask) {
+    const newTask = prompt("Edit the task:", oldTask);
+    if (!newTask || newTask.trim() === oldTask.trim()) return;
+        fetch('/edit', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ oldTask, newTask })
+        }).then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            location.reload();
+          } else {
+            alert("Edit failed.");
+          }
+        });
+      };
+  </script>
+
 </body>
 </html>
