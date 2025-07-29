@@ -20,7 +20,10 @@ app.post("/",function(req,res){
 
 app.delete("/delete", function (req, res) {
   const taskToDelete = req.body.task;
-  items = items.filter(item => item !== taskToDelete);
+  const index = items.findIndex(task => task === taskToDelete);
+  if (index !== -1) {
+    items.splice(index, 1);
+  }
   res.status(200).json({ success: true });
 });
 
