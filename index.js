@@ -15,7 +15,7 @@ res.render("list",{ejes :items})
 app.post("/",function(req,res){
     var item =req.body.ele1;
    items.push(item);
-   res.redirect("/");
+   res.status(200).json({ success: true});
 });
 
 app.delete("/delete", function (req, res) {
@@ -28,7 +28,7 @@ app.put("/edit", function(req, res) {
   const { oldTask, newTask } = req.body;
   const index = items.indexOf(oldTask);
   if (index !== -1) {
-    items[index] = newTask.trim();
+    items[index] = newTask;
     return res.status(200).json({ success: true });
   }
 });

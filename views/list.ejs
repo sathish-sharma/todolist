@@ -15,16 +15,37 @@
       <div class="item">
         <input type="checkbox" onclick="deleteTask('<%= ejes[i] %>')" />
         <p><%= ejes[i] %></p>
-        <button type="submit" onclick="editTask('<%= ejes[i] %>')">O</button>
+        <button type="submit" onclick="editTask('<%= ejes[i] %>')">Edit</button>
       </div>
     <% } %>
-    <form action="/" method="POST">
-      <input type="text" name="ele1" placeholder="Enter the task" required />
-      <button type="submit">+</button>
-    </form>
+   <form onsubmit="addTask(event)">
+    <input type="text" name="ele1" placeholder="Enter the task" required />
+    <button type="submit">+</button>
+  </form>
   </div>
 
  <script>
+
+ function addTask(event) {
+    const ele1 = document.querySelector('input[name=ele1]').value;
+    fetch("/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ele1})
+    }).then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        location.reload();
+        alert("Task added successfully");
+      }
+      else {
+        alert("Failed to add task");
+      }
+    });
+  };
+
     function deleteTask(task) {
       fetch("/delete", {
         method: "DELETE",
@@ -32,17 +53,18 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ task: task })
-      }).then(res => {
-        if (res.ok) {
+      }).then(res => { if (res.ok) {
           location.reload();
+          alert("Task deleted successfully")
         } else {
           alert("Failed to delete task");
         }
       });
     }
+
   function editTask(oldTask) {
     const newTask = prompt("Edit the task:", oldTask);
-    if (!newTask || newTask.trim() === oldTask.trim()) return;
+    if (!newTask || newTask === oldTask) return;
         fetch('/edit', {
           method: 'PUT',
           headers: {
@@ -53,11 +75,13 @@
         .then(data => {
           if (data.success) {
             location.reload();
+            alert("Task updated successfully");
           } else {
-            alert("Edit failed.");
+            alert("Failed to update task.");
           }
         });
       };
+
   </script>
 
 </body>
