@@ -86,6 +86,16 @@ input[type="text"]:focus {
   color: #857b7b;
   opacity: 1;
 }
+.edit-input, .save-btn {
+  display: none;
+  margin-left: 5px;
+}
+.item {
+  margin: 10px 0;
+    }
+    .item input[type="text"] {
+      padding: 5px;
+    }
 button {
   min-width: 40px;
   height: 40px;
