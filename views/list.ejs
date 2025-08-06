@@ -70,20 +70,30 @@
 
     function enableEdit(index) {
       const container = document.getElementById(`task-${index}`);
-      container.querySelector('.task-text').style.display = 'none';
-      container.querySelector('.edit-input').style.display = 'inline';
-      container.querySelector('.edit-btn').style.display = 'none';
-      container.querySelector('.save-btn').style.display = 'inline';
+      const taskText = container.querySelector('.task-text');
+      const editInput = container.querySelector('.edit-input');
+      const editBtn = container.querySelector('.edit-btn');
+      const saveBtn = container.querySelector('.save-btn');
+      taskText.style.display = 'none';
+      editInput.style.display = 'inline-block';
+      editBtn.style.display = 'none';
+      saveBtn.style.display = 'inline-block';
+
     }
 
     function saveEdit(index, oldTask) {
       const container = document.getElementById(`task-${index}`);
       const newTask = container.querySelector('.edit-input').value.trim();
+      const taskText = container.querySelector('.task-text');
+      const editBtn = container.querySelector('.edit-btn');
+      const saveBtn = container.querySelector('.save-btn');
+      taskText.style.display = 'inline-block';
+      editBtn.style.display = 'inline-block';
+      saveBtn.style.display = 'none';
       if (!newTask) {
         alert("Task cannot be empty.");
         return;
       }
-
       fetch('/edit', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
