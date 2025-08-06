@@ -9,9 +9,19 @@
 <body>
   <div id="heading" class="box">
     <h1>ToDoList</h1>
+    <% if (alert) { %>
+      <div class="alert <%= alert %>">
+        <%= alert === "added" ? "Task added successfully." : 
+            alert === "updated" ? "Task updated successfully." :
+            alert === "deleted" ? "Task deleted successfully." :
+            alert === "empty" ? "Task cannot be empty." : "" %>
+        <button onclick="this.parentElement.style.display='none'">X</button>
+      </div>
+    <% } %>
   </div>
 
   <div class="box">
+
     <% for (var i = 0; i < ejes.length; i++) { %>
       <div class="item" id="task-<%= i %>">
         <input type="checkbox" onclick="deleteTask('<%= ejes[i] %>')" />
@@ -38,55 +48,37 @@
       }
       fetch("/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ele1 })
       }).then(res => res.json())
       .then(data => {
-        if (data.success) {
-          alert("Task added successfully");
-          location.reload();
-        } else {
-          alert("Failed to add task");
-        }
+        if (data.success) location.reload();
+        else alert("Failed to add task.");
       });
     }
 
     function deleteTask(task) {
       fetch("/delete", {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ task: task })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task })
       }).then(res => {
-        if (res.ok) {
-          alert("Task deleted successfully");
-          location.reload();
-        } else {
-          alert("Failed to delete task");
-        }
+        if (res.ok) location.reload();
+        else alert("Failed to delete task.");
       });
     }
 
     function enableEdit(index) {
       const container = document.getElementById(`task-${index}`);
-      const p = container.querySelector('.task-text');
-      const input = container.querySelector('.edit-input');
-      const editBtn = container.querySelector('.edit-btn');
-      const saveBtn = container.querySelector('.save-btn');
-
-      p.style.display = 'none';
-      input.style.display = 'inline';
-      editBtn.style.display = 'none';
-      saveBtn.style.display = 'inline';
+      container.querySelector('.task-text').style.display = 'none';
+      container.querySelector('.edit-input').style.display = 'inline';
+      container.querySelector('.edit-btn').style.display = 'none';
+      container.querySelector('.save-btn').style.display = 'inline';
     }
 
     function saveEdit(index, oldTask) {
       const container = document.getElementById(`task-${index}`);
-      const input = container.querySelector('.edit-input');
-      const newTask = input.value.trim();
+      const newTask = container.querySelector('.edit-input').value.trim();
       if (!newTask) {
         alert("Task cannot be empty.");
         return;
@@ -94,19 +86,13 @@
 
       fetch('/edit', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ oldTask, newTask })
       })
       .then(res => res.json())
       .then(data => {
-        if (data.success) {
-          alert("Task updated successfully");
-          location.reload();
-        } else {
-          alert("Failed to update task.");
-        }
+        if (data.success) location.reload();
+        else alert("Failed to update task.");
       });
     }
   </script>

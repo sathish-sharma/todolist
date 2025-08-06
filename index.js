@@ -1,40 +1,55 @@
 const express = require("express");
 const bodyParser = require("body-parser");
- var app = express();
+const app = express();
 
 app.set("view engine", "ejs");
-app.use(express.static('public'));
-app.use(express.urlencoded({extended:true}));
-app.use(express.json());
+app.use(express.static("public"));
+app.use(bodyParser.json());
 
-var items =[];
- app.get("/", function(req, res) {
-res.render("list",{ejes :items})
- });
+let items = [];
+let alertMessage = null;
 
-app.post("/",function(req,res){
-    var item =req.body.ele1;
-   items.push(item);
-   res.status(200).json({ success: true});
+app.get("/", (req, res) => {
+  res.render("list", { ejes: items, alert: alertMessage });
+  alertMessage = null;
 });
 
-app.delete("/delete", function (req, res) {
-  const taskToDelete = req.body.task;
-  const index = items.findIndex(task => task === taskToDelete);
-  if (index !== -1) {
-    items.splice(index, 1);
+app.post("/", (req, res) => {
+  const item = req.body.ele1.trim();
+  if (!item) {
+    alertMessage = "empty";
+    return res.json({ success: false });
   }
-  res.status(200).json({ success: true });
+  items.push(item);
+  alertMessage = "added";
+  res.json({ success: true });
 });
 
-app.put("/edit", function(req, res) {
+app.put("/edit", (req, res) => {
   const { oldTask, newTask } = req.body;
   const index = items.indexOf(oldTask);
-  if (index !== -1) {
-    items[index] = newTask;
-    return res.status(200).json({ success: true });
+  if (index !== -1 && newTask.trim()) {
+    items[index] = newTask.trim();
+    alertMessage = "updated";
+    res.json({ success: true });
+  } else {
+    alertMessage = "empty";
+    res.json({ success: false });
   }
 });
- app.listen(4000, function(){
- console.log("Server started on port 4000");
- });
+
+app.delete("/delete", (req, res) => {
+  const { task } = req.body;
+  const index = items.indexOf(task);
+  if (index !== -1) {
+    items.splice(index, 1);
+    alertMessage = "deleted";
+    res.status(200).end();
+  } else {
+    res.status(404).end();
+  }
+});
+
+app.listen(3000, () => {
+  console.log("Server started on port 3000");
+});
