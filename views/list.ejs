@@ -41,8 +41,12 @@
         body: JSON.stringify({ ele1 })
       }).then(res => res.json())
       .then(data => {
-        if (data.success) location.reload();
-        else alert("Failed to add task.");
+        if (data.success){
+           location.reload();
+        }
+        else {
+          alert("Failed to add task.");
+        }
       });
     }
 
@@ -52,8 +56,12 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ task })
       }).then(res => {
-        if (res.ok) location.reload();
-        else alert("Failed to delete task.");
+        if (res.ok) {
+          location.reload();
+        }
+        else {
+          alert("Failed to delete task.");
+        }
       });
     }
 
@@ -72,7 +80,7 @@
 
     function saveEdit(index, oldTask) {
       const container = document.getElementById(`task-${index}`);
-      const newTask = container.querySelector('.edit-input').value.trim();
+      const newTask = container.querySelector('.edit-input').value;
       const taskText = container.querySelector('.task-text');
       const editBtn = container.querySelector('.edit-btn');
       const saveBtn = container.querySelector('.save-btn');
@@ -90,8 +98,11 @@
       })
       .then(res => res.json())
       .then(data => {
-        if (data.success) location.reload();
-        else alert("Failed to update task.");
+        if (data.success) {
+          location.reload();
+        } else {
+          alert("Failed to update task.");
+        }
       });
     }
   </script>
