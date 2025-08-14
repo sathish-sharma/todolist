@@ -72,7 +72,7 @@
 
     function saveEdit(index, oldTask) {
       const container = document.getElementById(`task-${index}`);
-      const newTask = container.querySelector('.edit-input').value;
+      const newTask = container.querySelector('.edit-input').value.trim();
       const taskText = container.querySelector('.task-text');
       const editBtn = container.querySelector('.edit-btn');
       const saveBtn = container.querySelector('.save-btn');
