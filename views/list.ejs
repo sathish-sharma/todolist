@@ -9,19 +9,8 @@
 <body>
   <div id="heading" class="box">
     <h1>ToDoList</h1>
-    <% if (alert) { %>
-      <div class="alert <%= alert %>">
-        <%= alert === "added" ? "Task added successfully." : 
-            alert === "updated" ? "Task updated successfully." :
-            alert === "deleted" ? "Task deleted successfully." :
-            alert === "empty" ? "Task cannot be empty." : "" %>
-        <button onclick="this.parentElement.style.display='none'">X</button>
-      </div>
-    <% } %>
   </div>
-
   <div class="box">
-
     <% for (var i = 0; i < ejes.length; i++) { %>
       <div class="item" id="task-<%= i %>">
         <input type="checkbox" onclick="deleteTask('<%= ejes[i] %>')" />
@@ -41,7 +30,7 @@
   <script>
     function addTask(event) {
       event.preventDefault();
-      const ele1 = document.querySelector('input[name=ele1]').value.trim();
+      const ele1 = document.querySelector('input[name=ele1]').value;
       if (!ele1) {
         alert("Task cannot be empty.");
         return;
@@ -83,7 +72,7 @@
 
     function saveEdit(index, oldTask) {
       const container = document.getElementById(`task-${index}`);
-      const newTask = container.querySelector('.edit-input').value.trim();
+      const newTask = container.querySelector('.edit-input').value;
       const taskText = container.querySelector('.task-text');
       const editBtn = container.querySelector('.edit-btn');
       const saveBtn = container.querySelector('.save-btn');
